@@ -1,0 +1,120 @@
+{% extends "base.html" %}
+{% block title %}Create New Advertisement{% endblock %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-8 px-4">
+    <div class="text-center mb-8">
+        <h1 class="text-3xl font-bold text-gray-800">Create New Advertisement</h1>
+        <p class="text-gray-600 mt-2">Fill in the details below to create your new ad campaign</p>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg p-8">
+        <form method="POST" enctype="multipart/form-data" class="space-y-6">
+            <!-- Ad Name -->
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Ad Name</label>
+                <input type="text" id="name" name="name" required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                    placeholder="Enter your advertisement name">
+            </div>
+
+            <!-- Price and Product Link -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label for="price" class="block text-sm font-medium text-gray-700 mb-1">Price ($)</label>
+                    <input type="number" step="0.01" id="price" name="price" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                        placeholder="0.00">
+                </div>
+                <div>
+                    <label for="product_link" class="block text-sm font-medium text-gray-700 mb-1">Product Link</label>
+                    <input type="url" id="product_link" name="product_link"
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                        placeholder="https://example.com/product">
+                </div>
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea id="description" name="description" rows="4" required
+                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition"
+                    placeholder="Enter a detailed description of your product"></textarea>
+            </div>
+
+            <!-- Image Upload -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Ad Image</label>
+                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-lg">
+                    <div class="space-y-1 text-center">
+                        <div class="flex text-sm text-gray-600 justify-center">
+                            <label for="image" class="relative cursor-pointer bg-white rounded-md font-medium text-purple-600 hover:text-purple-500 focus-within:outline-none">
+                                <span>Upload a file</span>
+                                <input id="image" name="image" type="file" class="sr-only" required accept="image/*">
+                            </label>
+                            <p class="pl-1">or drag and drop</p>
+                        </div>
+                        <p class="text-xs text-gray-500">PNG, JPG, GIF up to 5MB</p>
+                    </div>
+                </div>
+                <div class="mt-2 flex items-center text-sm text-gray-500">
+                    <i class="bi bi-info-circle mr-1"></i>
+                    High-quality images perform better with customers
+                </div>
+            </div>
+
+            <!-- Preview Section -->
+            <div class="border-t border-gray-200 pt-6">
+                <h3 class="text-lg font-medium text-gray-900 mb-4">Ad Preview</h3>
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl">
+                        <div class="h-48 bg-gray-200 flex items-center justify-center text-gray-500">
+                            <p>Image preview will appear here</p>
+                        </div>
+                        <div class="p-8">
+                            <div class="uppercase tracking-wide text-sm text-indigo-500 font-semibold" id="preview-price">$0.00</div>
+                            <a href="#" class="block mt-1 text-lg font-medium text-gray-900 hover:text-purple-600" id="preview-name">Ad Name</a>
+                            <p class="mt-2 text-gray-500" id="preview-description">Ad description will appear here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="pt-6">
+                <button type="submit" class="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-4 rounded-lg font-medium text-lg transition transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2">
+                    Create Advertisement
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    // Live preview functionality
+    document.getElementById('name').addEventListener('input', function() {
+        document.getElementById('preview-name').textContent = this.value || 'Ad Name';
+    });
+
+    document.getElementById('price').addEventListener('input', function() {
+        const price = parseFloat(this.value) || 0;
+        document.getElementById('preview-price').textContent = '$' + price.toFixed(2);
+    });
+
+    document.getElementById('description').addEventListener('input', function() {
+        document.getElementById('preview-description').textContent = this.value || 'Ad description will appear here.';
+    });
+
+    document.getElementById('image').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const preview = document.querySelector('.bg-gray-200');
+                preview.innerHTML = `<img src="${event.target.result}" alt="Preview" class="w-full h-full object-cover">`;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+</script>
+{% endblock %}

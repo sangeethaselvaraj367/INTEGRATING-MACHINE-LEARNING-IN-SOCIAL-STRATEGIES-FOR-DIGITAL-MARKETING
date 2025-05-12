@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Trending Advertisements{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Page Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900 sm:text-3xl">
+                Trending Advertisements
+            </h1>
+            <p class="mt-2 text-gray-600">
+                Discover what's popular right now
+            </p>
+        </div>
+
+        <!-- Action Bar -->
+        <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+            <div class="flex space-x-2 overflow-x-auto pb-2 w-full sm:w-auto">
+                <span class="px-3 py-1.5 bg-purple-600 text-white rounded-full text-sm font-medium whitespace-nowrap">
+                    Trending
+                </span>
+                <a href="{{ url_for('most_liked_ads') }}" 
+                   class="px-3 py-1.5 border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-100 whitespace-nowrap">
+                    Most Liked
+                </a>
+                <a href="{{ url_for('most_commented_ads') }}" 
+                   class="px-3 py-1.5 border border-gray-200 rounded-full text-sm font-medium text-gray-700 hover:bg-gray-100 whitespace-nowrap">
+                    Most Commented
+                </a>
+            </div>
+            {% if 'user_id' in session %}
+            <a href="{{ url_for('add_ad') }}" class="w-full sm:w-auto flex-shrink-0 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-full shadow-sm flex items-center justify-center">
+                <i class="bi bi-plus-lg mr-2"></i> Create Ad
+            </a>
+            {% endif %}
+        </div>
+
+        <!-- Ads Grid -->
+        <div class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {% for ad in ads %}
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100 hover:shadow-md transition-all">
+                <!-- Ad Image -->
+                <div class="relative aspect-[4/3] overflow-hidden">
+                    <img class="w-full h-full object-cover hover:scale-105 transition-transform duration-300" 
+                         src="{{ url_for('static', filename='uploads/' + ad.image) }}" 
+                         alt="{{ ad.name }}">
+                    <div class="absolute top-3 right-3 bg-white/90 px-2 py-1 rounded-full text-xs font-semibold shadow-sm">
+                        ${{ "%.2f"|format(ad.price) }}
+                    </div>
+                </div>
+
+                <!-- Ad Content -->
+                <div class="p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-base font-medium text-gray-900 line-clamp-1">{{ ad.name }}</h3>
+                        <span class="flex items-center text-xs text-gray-500 bg-gray-50 px-2 py-1 rounded-full">
+                            <i class="bi bi-eye text-gray-400 mr-1"></i> {{ ad.likes + ad.unlikes }}
+                        </span>
+                    </div>
+                    
+                    <p class="text-gray-500 text-sm mb-3 line-clamp-2">{{ ad.description }}</p>
+                    
+                    <!-- Engagement Stats -->
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex space-x-3">
+                            <span class="flex items-center text-xs text-gray-500">
+                                <i class="bi bi-hand-thumbs-up text-green-500 mr-1"></i>
+                                {{ ad.likes }}
+                            </span>
+                            <span class="flex items-center text-xs text-gray-500">
+                                <i class="bi bi-hand-thumbs-down text-red-500 mr-1"></i>
+                                {{ ad.unlikes }}
+                            </span>
+                            <span class="flex items-center text-xs text-gray-500">
+                                <i class="bi bi-chat-left-text text-blue-500 mr-1"></i>
+                                {{ ad.feedback_count }}
+                            </span>
+                        </div>
+                        <a href="{{ ad.product_link }}" target="_blank" 
+                           class="text-xs font-medium text-purple-600 hover:text-purple-800 flex items-center">
+                            Visit <i class="bi bi-arrow-up-right ml-1 text-xs"></i>
+                        </a>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex space-x-2">
+                        <a href="{{ url_for('like', ad_id=ad.id) }}" 
+                           class="flex-1 flex items-center justify-center py-1.5 px-3 bg-green-50 hover:bg-green-100 text-green-700 text-xs font-medium rounded-lg transition">
+                            <i class="bi bi-hand-thumbs-up mr-1.5"></i> Like
+                        </a>
+                        <a href="{{ url_for('unlike', ad_id=ad.id) }}" 
+                           class="flex-1 flex items-center justify-center py-1.5 px-3 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-medium rounded-lg transition">
+                            <i class="bi bi-hand-thumbs-down mr-1.5"></i> Unlike
+                        </a>
+                        <a href="{{ url_for('feedback', ad_id=ad.id) }}" 
+                           class="flex-1 flex items-center justify-center py-1.5 px-3 bg-blue-50 hover:bg-blue-100 text-blue-700 text-xs font-medium rounded-lg transition">
+                            <i class="bi bi-chat-left-text mr-1.5"></i> Feedback
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Empty State -->
+        {% if not ads %}
+        <div class="text-center py-12">
+            <div class="mx-auto h-24 w-24 text-gray-300 mb-4">
+                <i class="bi bi-megaphone text-5xl"></i>
+            </div>
+            <h3 class="text-lg font-medium text-gray-900">No trending ads yet</h3>
+            <p class="mt-1 text-sm text-gray-500">Create an ad to get started</p>
+            {% if 'user_id' in session %}
+            <div class="mt-6">
+                <a href="{{ url_for('add_ad') }}" class="inline-flex items-center px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm font-medium rounded-full shadow-sm">
+                    <i class="bi bi-plus-lg mr-2"></i> Create New Ad
+                </a>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

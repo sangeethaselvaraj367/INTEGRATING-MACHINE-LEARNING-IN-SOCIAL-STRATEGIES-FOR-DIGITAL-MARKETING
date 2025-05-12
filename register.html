@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | YourBrand</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            min-height: 100vh;
+            background: linear-gradient(135deg, rgba(67,97,238,0.1) 0%, rgba(72,149,239,0.1) 100%);
+        }
+        
+        .advertisement-column {
+            flex: 1;
+            background: url('https://source.unsplash.com/random/1600x900?technology') center/cover no-repeat;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+            color: white;
+        }
+        
+        .advertisement-column::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(67,97,238,0.7) 0%, rgba(72,149,239,0.7) 100%);
+        }
+        
+        .ad-content {
+            position: relative;
+            z-index: 1;
+            max-width: 500px;
+        }
+        
+        .ad-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+        
+        .ad-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .ad-footer {
+            position: relative;
+            z-index: 1;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .register-column {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+        
+        .register-container {
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .logo img {
+            height: 50px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .card h2 {
+            color: var(--dark);
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+        
+        .input-field {
+            position: relative;
+        }
+        
+        .input-field i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+        
+        .input-field input {
+            width: 100%;
+            padding: 12px 15px 12px 45px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+        
+        .input-field input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67,97,238,0.1);
+        }
+        
+        .password-strength {
+            margin-top: 0.5rem;
+            height: 4px;
+            background-color: #e0e0e0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            background-color: #ff4444;
+            transition: width 0.3s, background-color 0.3s;
+        }
+        
+        .password-requirements {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary);
+        }
+        
+        .divider {
+            margin: 1.5rem 0;
+            position: relative;
+            text-align: center;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background-color: #e0e0e0;
+            z-index: -1;
+        }
+        
+        .divider span {
+            background-color: white;
+            padding: 0 15px;
+            color: #777;
+            font-size: 0.9rem;
+        }
+        
+        .login-link {
+            text-align: center;
+            font-size: 0.9rem;
+        }
+        
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .terms {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                flex-direction: column;
+            }
+            
+            .advertisement-column {
+                display: none;
+            }
+            
+            .register-column {
+                padding: 1rem;
+            }
+            
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Advertisement Column -->
+    <div class="advertisement-column">
+        <div class="ad-content">
+            <h1>Join Our Community!</h1>
+            <p>Sign up today to unlock exclusive features and connect with like-minded people. Get started in just a few simple steps.</p>
+            <div class="ad-banner">
+                <!-- Advertisement Space -->
+                <div style="background: rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                    <h3 style="margin-bottom: 0.5rem;">Special Offer!</h3>
+                    <p>First 100 new members get a free premium trial for 30 days.</p>
+                </div>
+            </div>
+        </div>
+        <div class="ad-footer">
+            © 2023 YourBrand. All rights reserved.
+        </div>
+    </div>
+    
+    <!-- Register Column -->
+    <div class="register-column">
+        <div class="register-container">
+            <div class="logo">
+                <img src="https://i.pinimg.com/474x/e5/6b/84/e56b841924ac729935e858cb59535fb7.jpg" alt="Logo">
+            </div>
+            
+            <div class="card">
+                <h2>Create Account</h2>
+                
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <div class="input-field">
+                            <i class="fas fa-user"></i>
+                            <input type="text" id="username" name="username" placeholder="Choose a username" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-field">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-field">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" name="password" placeholder="Create a password" required>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-meter" id="strengthMeter"></div>
+                        </div>
+                        <div class="password-requirements">
+                            Use 8+ characters with a mix of letters, numbers & symbols
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm Password</label>
+                        <div class="input-field">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="confirm-password" name="confirm-password" placeholder="Confirm your password" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-user-plus"></i> Create Account
+                    </button>
+                </form>
+                
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+                
+                <div class="terms">
+                    By registering, you agree to our <a href="/terms">Terms of Service</a> and <a href="/privacy">Privacy Policy</a>
+                </div>
+                
+                <div class="login-link">
+                    Already have an account? <a href="/login">Sign in</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthMeter = document.getElementById('strengthMeter');
+        
+        passwordInput.addEventListener('input', function() {
+            const password = this.value;
+            let strength = 0;
+            
+            // Check for length
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // Check for uppercase letters
+            if (/[A-Z]/.test(password)) strength += 1;
+            
+            // Check for numbers
+            if (/[0-9]/.test(password)) strength += 1;
+            
+            // Check for special characters
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+            // Update strength meter
+            let width = 0;
+            let color = '#ff4444'; // Red
+            
+            if (strength <= 1) {
+                width = 25;
+                color = '#ff4444'; // Red
+            } else if (strength <= 3) {
+                width = 50;
+                color = '#ffbb33'; // Yellow
+            } else if (strength <= 4) {
+                width = 75;
+                color = '#00C851'; // Green
+            } else {
+                width = 100;
+                color = '#00C851'; // Green
+            }
+            
+            strengthMeter.style.width = width + '%';
+            strengthMeter.style.backgroundColor = color;
+        });
+    </script>
+</body>
+</html>
